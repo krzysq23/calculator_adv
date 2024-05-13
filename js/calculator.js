@@ -1,6 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
     
     // Obaługa przycisków
+    const operators =  ["+", "-", "/",  "*", "."];
+
     var charBtns = document.querySelectorAll(".char");
 
     for (i = 0; i < charBtns.length; i++) {
@@ -28,32 +30,43 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     document.querySelector(".division").onclick = function() {
-        document.calc.txt.value += "/";
+        if(!lastCharIsOperator()) {
+            document.calc.txt.value += "/";
+        }
     };
 
-    document.querySelector(".multiplication").onclick = function() {
-        document.calc.txt.value += "*";
+    document.querySelector(".multiplication").onclick = function() { 
+        if(!lastCharIsOperator()) {
+            document.calc.txt.value += "*";
+        }  
     };
 
     document.querySelector(".minus").onclick = function() {
-        document.calc.txt.value += "-";
+        if(!lastCharIsOperator()) {
+            document.calc.txt.value += "-";
+        }
     };
 
     document.querySelector(".plus").onclick = function() {
-        document.calc.txt.value += "+";
-    };
-
-    document.querySelector(".dot").onclick = function() {
-        document.calc.txt.value += ".";
+        if(!lastCharIsOperator()) {
+            document.calc.txt.value += "+";
+        }
     };
 
     document.querySelector(".equal").onclick = function() {
-        var type = document.querySelector("span.type i").textContent,
-            equation = calc.txt.value,
-            relult = eval(calc.txt.value);
-        document.calc.txt.value = relult;
-        saveEquation(type, equation, relult);
+        if(!lastCharIsOperator()) {
+            var type = document.calc.type.value,
+                equation = calc.txt.value,
+                relult = eval(calc.txt.value);
+            document.calc.txt.value = relult;
+            saveEquation(type, equation, relult);
+        }
     };
+
+    function lastCharIsOperator() {
+        const lastChar = document.calc.txt.value.slice(-1);
+        return operators.includes(lastChar);
+    }
 
     // Obaługa wyboru trybu kalkulatora
     document.querySelector(".type").onclick = function() {
@@ -90,6 +103,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 break;
         }
         document.querySelector("span.type i").textContent = this.id;
+        document.calc.type.value = this.id;
+        document.calc.txt.value = "";
         document.querySelector(".calculator-modal").style.display = "none";
     }
     
