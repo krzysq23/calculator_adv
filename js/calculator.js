@@ -1,9 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
     
     // Obaługa przycisków
-    window.operators =  ["+", "-", "/",  "*", "."];
+    window.operators =  ["+", "-", "/",  "*"];
     window.equationRegex = /([*\/]|\b\s*-|\b\s*\+)/g;
-    window.keyList = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F", "+", "-", "/",  "*", ".", "="];
+    window.keyList = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F", "+", "-", "/",  "*", "=", "DELETE"];
 
     var charBtns = document.querySelectorAll(".char");
 
@@ -12,6 +12,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function charClick() {
+        if(document.calc.type.value != "HEX") {
+            return;
+        }
         var value = this.id;
         document.calc.txt.value += value;
     }
@@ -24,6 +27,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function numberClick() {
         var value = this.id;
+        if(document.calc.type.value == "OCT" && ["8", "9"].includes(value)) {
+            return;
+        }
+        if(document.calc.type.value == "BIN" && ["2", "3", "4", "5", "6", "7", "8", "9"].includes(value)) {
+            return;
+        }
         document.calc.txt.value += value;
     }
 
@@ -136,8 +145,24 @@ document.addEventListener("DOMContentLoaded", () => {
     document.addEventListener("keydown", (event) => {
         if (event.isComposing || event.keyCode === 229) {
             return;
-        } else if(keyList.includes(event.key.toUpperCase())) {
-            console.log(event)
+        } 
+        const key = event.key.toUpperCase();
+        if(keyList.includes(key)) {
+            if(key.length == 1 && (!isNaN(key) || key.match(/[A-F]/))) {
+                document.getElementById(key).click();
+            } else if(key == "DELETE") {
+                document.calc.txt.value = "";
+            } else if(key == "=") {
+                document.querySelector(".equal").click();
+            } else if(key == "+") {
+                document.querySelector(".plus").click();
+            } else if(key == "-") {
+                document.querySelector(".minus").click();
+            } else if(key == "/") {
+                document.querySelector(".division").click();
+            } else if(key == "*") {
+                document.querySelector(".multiplication").click();
+            }
         }
     });
 
