@@ -56,6 +56,10 @@ document.addEventListener("DOMContentLoaded", () => {
         document.querySelector(".calculator-modal").style.display = "block";
     };
 
+    document.querySelector(".close-modal").onclick = function() {
+        document.querySelector(".calculator-modal").style.display = "none";
+    };
+
     var typeBtns = document.querySelectorAll(".type-select");
 
     for (i = 0; i < typeBtns.length; i++) {
@@ -123,5 +127,10 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("3").classList.add("disable");
         document.getElementById("2").classList.add("disable");
     }
+
+    // Obaługa notesu
+    document.querySelector(".eraser").onclick = function() {
+        document.querySelector(".paper .text").textContent = "";
+    };
 
 });

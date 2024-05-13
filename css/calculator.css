@@ -11,20 +11,27 @@ body {
 	align-items: center;
 	justify-content: center;
 	background-color: #202020;
+	background-image: url(../img/background.jpg);
 }
 
-.container {
+.wrapper {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+}
+
+.container-c {
 	position: relative;
 	min-width: 300px;
 	min-height: 400px;
 	padding: 40px 30px 30px;
 	border-radius: 20px;
+	background-color: #202020;
 	box-shadow: 25px 25px 75px rgba(0, 0, 0, 0.25),
 		10px 10px 70px rgba(0, 0, 0, 0.25), inset -5px -5px 15px rgba(0, 0, 0, 0.25),
 		inset 5px 5px 15px rgba(0, 0, 0, 0.25);
 }
 
-.container span {
+.container-c span {
 	color: #fff;
 	position: relative;
 	display: grid;
@@ -40,6 +47,13 @@ body {
 	cursor: pointer;
 	font-weight: 400;
 	border-radius: 10px;
+}
+
+.container-p {
+    position: relative;
+    min-width: 300px;
+    min-height: 400px;
+    padding: 40px 30px 30px;
 }
 
 .calculator span:active {
@@ -154,6 +168,7 @@ body {
 	position: absolute;
     left: 50%;
     top: 50%;
+	padding: 10px;
     transform: translate(-50%, -50%);
 	width: 300px;
 	background: #202020;
@@ -163,8 +178,15 @@ body {
 		inset 5px 5px 15px rgba(0, 0, 0, 0.25);
 }
 
+.calculator-modal .close-modal {
+    float: right;
+    width: 40px;
+    height: 40px;
+}
+
 .calculator-modal .type-select {
-	width: 100%;
+	width: 260px;
+	height: 60px;
 	background: #96f321;
 }
 
@@ -174,4 +196,18 @@ body {
 
 .calculator-modal .type-select i {
 	font-size: 1.5em;
+}
+
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    margin: 5px 0;
+}
+
+.copyright { 
+	color: #fff;
+    font-size: 1em;
 }
