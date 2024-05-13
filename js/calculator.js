@@ -121,7 +121,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 result = eval(result + eqSplit[i-1] + Number("0b" + eqSplit[i]));
             }
         }
-        return result.toString(2);
+        result = result.toString(2);
+        if(result.length % 4 == 1) {
+            result = "000" + result;
+        } else if(result.length % 4 == 2) {
+            result = "00" + result;
+        } else if(result.length % 4 == 3) {
+            result = "0" + result;
+        }
+        return result.match(/.{1,4}/g).join(" ");
     }
 
     // Obsługa wpisywania z klawiatury 
