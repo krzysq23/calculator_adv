@@ -2,6 +2,8 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // Obaługa przycisków
     const operators =  ["+", "-", "/",  "*", "."];
+    const equationRegex = /([*\/]|\b\s*-|\b\s*\+)/g;
+    const keyList = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F", "+", "-", "/",  "*", ".", "="];
 
     var charBtns = document.querySelectorAll(".char");
 
@@ -57,9 +59,23 @@ document.addEventListener("DOMContentLoaded", () => {
         if(!lastCharIsOperator()) {
             var type = document.calc.type.value,
                 equation = calc.txt.value,
-                relult = eval(calc.txt.value);
-            document.calc.txt.value = relult;
-            saveEquation(type, equation, relult);
+                result = 0;
+            switch (type) {
+                case "HEX":
+                    result = hexResult();
+                    break;
+                case "DEC":
+                    result = eval(calc.txt.value);
+                    break;
+                case "OCT":
+                    result = octResult();
+                    break;
+                case "BIN":
+                    result = binResult();
+                    break;
+            }
+            document.calc.txt.value = result;
+            saveEquation(type, equation, result);
         }
     };
 
@@ -67,6 +83,51 @@ document.addEventListener("DOMContentLoaded", () => {
         const lastChar = document.calc.txt.value.slice(-1);
         return operators.includes(lastChar);
     }
+
+    function hexResult() {
+        var result = 0,
+            eqSplit = calc.txt.value.split(equationRegex);
+        result = eval( Number("0x" + eqSplit[0]) + eqSplit[1] + Number("0x" + eqSplit[2]) );
+        if(eqSplit.length > 0) {
+            for (let i = 4; i < eqSplit.length; i += 2) {
+                result = eval(result + eqSplit[i-1] + Number("0x" + eqSplit[i]));
+            }
+        }
+        return result.toString(16).toUpperCase();
+    }
+
+    function octResult() {
+        var result = 0,
+            eqSplit = calc.txt.value.split(equationRegex);
+        result = eval( Number("0o" + eqSplit[0]) + eqSplit[1] + Number("0o" + eqSplit[2]) );
+        if(eqSplit.length > 0) {
+            for (let i = 4; i < eqSplit.length; i += 2) {
+                result = eval(result + eqSplit[i-1] + Number("0o" + eqSplit[i]));
+            }
+        }
+        return result.toString(8);
+    }
+
+    function binResult() {
+        var result = 0,
+            eqSplit = calc.txt.value.split(equationRegex);
+        result = eval( Number("0b" + eqSplit[0]) + eqSplit[1] + Number("0b" + eqSplit[2]) );
+        if(eqSplit.length > 0) {
+            for (let i = 4; i < eqSplit.length; i += 2) {
+                result = eval(result + eqSplit[i-1] + Number("0b" + eqSplit[i]));
+            }
+        }
+        return result.toString(2);
+    }
+
+    // Obsługa wpisywania z klawiatury 
+    document.addEventListener("keydown", (event) => {
+        if (event.isComposing || event.keyCode === 229) {
+            return;
+        } else if(keyList.includes(event.key.toUpperCase())) {
+            console.log(event)
+        }
+    });
 
     // Obaługa wyboru trybu kalkulatora
     document.querySelector(".type").onclick = function() {
@@ -154,7 +215,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function saveEquation(type, equation, relult) {
         const newDiv = document.createElement("div");
-        newDiv.append(type + " | " + equation + " = " + relult);
+        newDiv.append(type + " | " + equation.split(equationRegex).join(" ") + " = " + relult);
         document.querySelector(".paper .text").appendChild(newDiv);
     }
 
