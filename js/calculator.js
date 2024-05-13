@@ -48,7 +48,11 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     document.querySelector(".equal").onclick = function() {
-        document.calc.txt.value=eval(calc.txt.value);
+        var type = document.querySelector("span.type i").textContent,
+            equation = calc.txt.value,
+            relult = eval(calc.txt.value);
+        document.calc.txt.value = relult;
+        saveEquation(type, equation, relult);
     };
 
     // Obaługa wyboru trybu kalkulatora
@@ -132,5 +136,11 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelector(".eraser").onclick = function() {
         document.querySelector(".paper .text").textContent = "";
     };
+
+    function saveEquation(type, equation, relult) {
+        const newDiv = document.createElement("div");
+        newDiv.append(type + " | " + equation + " = " + relult);
+        document.querySelector(".paper .text").appendChild(newDiv);
+    }
 
 });
