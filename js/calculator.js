@@ -65,6 +65,9 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     document.querySelector(".equal").onclick = function() {
+        if(document.calc.txt.value.length == 0) {
+            return;
+        }
         if(!lastCharIsOperator()) {
             var type = document.calc.type.value,
                 equation = calc.txt.value,
@@ -82,6 +85,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 case "BIN":
                     result = binResult();
                     break;
+            }
+            if(result == "NAN") {
+                return;
             }
             document.calc.txt.value = result;
             saveEquation(type, equation, result);
